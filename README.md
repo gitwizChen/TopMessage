@@ -1,5 +1,7 @@
 A beautiful way of message prompting instead of Toast!
 
+![sample](screenshots/1.gif)
+
 # Usage
 
 ```
