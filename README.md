@@ -1,6 +1,6 @@
 A beautiful way of message prompting instead of Toast!
 
-![sample](screenshots/1.gif)
+![sample](https://github.com/gitwizChen/TopMessage/blob/master/screenshots/1.gif)
 
 # Usage
 
