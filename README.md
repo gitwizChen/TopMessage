@@ -1,6 +1,6 @@
 A beautiful way of message prompting instead of Toast!
 
-<img src="https://github.com/gitwizChen/TopMessage/raw/master/screenshots/1.gif" alt="sample" style="max-width: 40%;">
+<img src="https://github.com/gitwizChen/TopMessage/raw/master/screenshots/1.gif" alt="sample" style="width: 40%;">
 
 # Usage
 
