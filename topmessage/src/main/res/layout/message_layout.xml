@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/interactive_area"
             android:layout_toRightOf="@+id/icon"
             android:orientation="vertical"
             android:paddingLeft="12dp"
@@ -35,9 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="成功"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:text="成功"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -48,16 +49,69 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:ellipsize="end"
+                android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="aaaaa"
+                android:text="消息"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/interactive_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:id="@+id/common"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_radius_bg"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="常用"
+                android:textColor="@color/common"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@+id/common"
+                android:background="@drawable/btn_left_radius_bg"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="确定"
+                android:textColor="@color/confirm"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_toRightOf="@+id/confirm"
+                android:background="@drawable/btn_right_radius_bg"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="取消"
+                android:textColor="@color/cancel"
+                android:textSize="14sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

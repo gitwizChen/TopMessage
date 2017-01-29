@@ -12,6 +12,12 @@
     android:layout_marginTop="24dp"
     tools:context="com.wizchen.topmessagesample.MainActivity">
 
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hello"/>
+
     <Button
         android:id="@+id/success"
         android:layout_width="wrap_content"
@@ -35,4 +41,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="info"/>
+
+    <Button
+        android:id="@+id/confirm_and_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirm and cancel button"/>
+
+    <Button
+        android:id="@+id/common"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="common button"/>
+
+    <Button
+        android:id="@+id/toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="toast"/>
 </LinearLayout>

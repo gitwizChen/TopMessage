@@ -3,5 +3,8 @@
     <color name="success">#61a117</color>
     <color name="error">#f9422f</color>
     <color name="warning">#eebd22</color>
-    <color name="info">#7dccfc</color>
+    <color name="info">#2685dc</color>
+    <color name="common">#1588b6</color>
+    <color name="confirm">#15b638</color>
+    <color name="cancel">#868686</color>
 </resources>
