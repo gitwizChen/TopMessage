@@ -7,4 +7,5 @@
     <color name="common">#1588b6</color>
     <color name="confirm">#15b638</color>
     <color name="cancel">#868686</color>
+    <color name="hint_warning">#a0d72816</color>
 </resources>

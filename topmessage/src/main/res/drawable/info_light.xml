@@ -11,17 +11,11 @@
 S198.4,0.5,128,0.5 Z M128,242 C65,242,14,191,14,128 S65,14,128,14
 S242,65,242,128 S191,242,128,242 Z" />
     <group>
-        <clip-path
+        <path
+            android:fillColor="#ffffff"
             android:pathData="M115.1,98.5 L139.9,98.5 L139.9,202 L115.1,202 L115.1,98.5 Z" />
         <path
             android:fillColor="#ffffff"
-            android:pathData="M94.4,77.8 L160.6,77.8 L160.6,222.7 L94.4,222.7 L94.4,77.8 Z" />
-    </group>
-    <group>
-        <clip-path
             android:pathData="M115.1,53 L139.9,53 L139.9,77.8 L115.1,77.8 L115.1,53 Z" />
-        <path
-            android:fillColor="#ffffff"
-            android:pathData="M94.4,32.3 L160.6,32.3 L160.6,98.5 L94.4,98.5 L94.4,32.3 Z" />
     </group>
 </vector>

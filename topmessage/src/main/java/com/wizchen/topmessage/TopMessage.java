@@ -1,20 +1,28 @@
 package com.wizchen.topmessage;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.SwipeDismissBehavior;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wizchen.topmessage.util.BarUtil;
@@ -40,8 +48,11 @@ public class TopMessage {
     private static final Handler mHandler;
 
     private ViewGroup mDecorView;
-    private View mMessageView;
-    private boolean isShow = false;
+    private CoordinatorLayout mMessageView;
+    private boolean mIsShow = false;
+    private CommonCallback mCommonCallback;
+    private ConfirmOrCancelCallback mConfirmOrCancelCallback;
+    private SendCallback mSendCallback;
 
     static {
         mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -60,146 +71,109 @@ public class TopMessage {
         });
     }
 
-    private TopMessage() {
-    }
-
-    public static void showSuccess(Activity activity, String message) {
-        showSuccess(activity, message, DURATION.MEDIUM);
-    }
-
-    public static void showSuccess(Activity activity, String message, DURATION duration) {
-        showSuccess(activity, message, duration, null, null, null);
-    }
-
     /**
-     * show success message
+     * create the message view in current activity
      *
-     * @param activity
-     * @param message
-     * @param duration
+     * @param activity                the current activity
+     * @param message                 the message
+     * @param title                   the big title
+     * @param backgroundColor         the background of message
+     * @param drawableResId           the icon image
+     * @param commonCallback          if you need to set a common button, then you should get
+     *                                callback from the event
+     * @param commonButtonText        the common button's title
+     * @param confirmOrCancelCallback if you need to set a confirm and a cancel button, then you
+     *                                should get callback from the event
+     * @param confirmButtonText       the confirm button's title
+     * @param cancelButtonText        the cancel button's title
+     * @param sendCallback            if you need to set a send button and the input area, then you
+     *                                should get callback from the event
+     * @param sendButtonText          the send button's title
+     * @param inputHint               if it is not equal null, the first should be the default hint
+     *                                message and if it has a second element, it will be the hint
+     *                                that will be showed when the user clicks submit though he inputs nothing
      */
-    public static void showSuccess(Activity activity, String message, DURATION duration, CommonCallback commonCallback, ConfirmCallback confirmCallback, CancelCallback cancelCallback) {
-        TopMessage topMessage = new TopMessage();
-        topMessage.createView(activity, message, activity.getResources().getString(R.string.success), R.color.success, R.drawable.success_light, commonCallback, confirmCallback, cancelCallback);
-        topMessage.scheduleTime(duration);
-    }
-
-    public static void showError(Activity activity, String message) {
-        showError(activity, message, DURATION.MEDIUM);
-    }
-
-    public static void showError(Activity activity, String message, DURATION duration) {
-        showError(activity, message, duration, null, null, null);
-    }
-
-    /**
-     * show error message
-     *
-     * @param activity
-     * @param message
-     * @param duration
-     */
-    public static void showError(Activity activity, String message, DURATION duration, CommonCallback commonCallback, ConfirmCallback confirmCallback, CancelCallback cancelCallback) {
-        TopMessage topMessage = new TopMessage();
-        topMessage.createView(activity, message, activity.getResources().getString(R.string.error), R.color.error, R.drawable.error_light, commonCallback, confirmCallback, cancelCallback);
-        topMessage.scheduleTime(duration);
-    }
-
-    public static void showWarning(Activity activity, String message) {
-        showWarning(activity, message, DURATION.MEDIUM);
-    }
-
-    public static void showWarning(Activity activity, String message, DURATION duration) {
-        showWarning(activity, message, duration, null, null, null);
-    }
-
-    /**
-     * show wanring message
-     *
-     * @param activity
-     * @param message
-     * @param duration
-     */
-    public static void showWarning(Activity activity, String message, DURATION duration, CommonCallback commonCallback, ConfirmCallback confirmCallback, CancelCallback cancelCallback) {
-        TopMessage topMessage = new TopMessage();
-        topMessage.createView(activity, message, activity.getResources().getString(R.string.warning), R.color.warning, R.drawable.warning_light, commonCallback, confirmCallback, cancelCallback);
-        topMessage.scheduleTime(duration);
-    }
-
-    public static void showInfo(Activity activity, String message) {
-        showInfo(activity, message, DURATION.MEDIUM);
-    }
-
-    public static void showInfo(Activity activity, String message, DURATION duration) {
-        showInfo(activity, message, duration, null, null, null);
-    }
-
-    /**
-     * show info message
-     *
-     * @param activity
-     * @param message
-     * @param duration
-     */
-    public static void showInfo(Activity activity, String message, DURATION duration, CommonCallback commonCallback, ConfirmCallback confirmCallback, CancelCallback cancelCallback) {
-        TopMessage topMessage = new TopMessage();
-        topMessage.createView(activity, message, activity.getResources().getString(R.string.info), R.color.info, R.drawable.info_light, commonCallback, confirmCallback, cancelCallback);
-        topMessage.scheduleTime(duration);
-    }
-
-    /**
-     * create the message view in activity
-     *
-     * @param activity
-     * @param message
-     * @param type
-     * @param backgroundColor
-     * @param drawableResId
-     * @param commonCallback
-     * @param confirmCallback
-     * @param cancelCallback
-     */
-
-    private void createView(Activity activity,
-                            String message,
-                            String type,
-                            @ColorRes int backgroundColor,
-                            @DrawableRes int drawableResId,
-                            final CommonCallback commonCallback,
-                            final ConfirmCallback confirmCallback,
-                            final CancelCallback cancelCallback) {
+    protected void createView(final Activity activity,
+                              String message,
+                              String title,
+                              @ColorRes int backgroundColor,
+                              @DrawableRes int drawableResId,
+                              final CommonCallback commonCallback, String commonButtonText,
+                              final ConfirmOrCancelCallback confirmOrCancelCallback, String confirmButtonText, String cancelButtonText,
+                              final SendCallback sendCallback, String sendButtonText, final String... inputHint) {
+        this.mCommonCallback = commonCallback;
+        this.mConfirmOrCancelCallback = confirmOrCancelCallback;
+        this.mSendCallback = sendCallback;
         if (null == mDecorView) {
             mDecorView = (ViewGroup) activity.getWindow().getDecorView();
         }
         if (null == mMessageView) {
             int messageViewIndex = getMessageViewIndex(mDecorView, "top-message");
             // if activity already has a message view, retrieving it from decorview
-            if (-2 == messageViewIndex) {
-                mMessageView = LayoutInflater.from(activity).inflate(R.layout.message_layout, mDecorView, false);
-                mMessageView.setTag("top-message");
-                mDecorView.addView(mMessageView, mDecorView.getChildCount());
-            } else {
-                mMessageView = mDecorView.getChildAt(messageViewIndex);
+            if (-2 != messageViewIndex) {
+                mDecorView.removeViewAt(messageViewIndex);
             }
+            mMessageView = (CoordinatorLayout) LayoutInflater.from(activity).inflate(R.layout.message_layout, mDecorView, false);
+            mMessageView.setTag("top-message");
+            mDecorView.addView(mMessageView, mDecorView.getChildCount());
         }
         mMessageView.setVisibility(View.INVISIBLE);
+
+        // find all widgets
         final LinearLayout rootLL = (LinearLayout) mMessageView.findViewById(R.id.root);
         final TextView messageTV = (TextView) mMessageView.findViewById(R.id.message);
-        final TextView typeTV = (TextView) mMessageView.findViewById(R.id.type);
+        final TextView titleTV = (TextView) mMessageView.findViewById(R.id.title);
         final ImageView iconIV = (ImageView) mMessageView.findViewById(R.id.icon);
         final TextView confirmTV = (TextView) mMessageView.findViewById(R.id.confirm);
         final TextView cancelTV = (TextView) mMessageView.findViewById(R.id.cancel);
         final TextView commonTV = (TextView) mMessageView.findViewById(R.id.common);
+        final RelativeLayout inputAreaRL = (RelativeLayout) mMessageView.findViewById(R.id.input_area);
+        final EditText inputET = (EditText) mMessageView.findViewById(R.id.input);
+        final TextView sendTV = (TextView) mMessageView.findViewById(R.id.send);
 
         rootLL.setPadding(0, BarUtil.getStatusBarHeight(activity), 0, 0);
         rootLL.setBackgroundResource(backgroundColor);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            rootLL.setElevation(5);
-        }
+        inputAreaRL.setBackgroundResource(backgroundColor);
         messageTV.setText(message);
-        typeTV.setText(type);
+        titleTV.setText(title);
         iconIV.setImageDrawable(activity.getResources().getDrawable(drawableResId));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mMessageView.setElevation(5);
+        }
 
+        final ViewGroup.LayoutParams lp = rootLL.getLayoutParams();
+        if (lp instanceof CoordinatorLayout.LayoutParams && null == commonCallback && null == confirmOrCancelCallback && null == sendCallback) {
+            final Behavior behavior = new Behavior();
+            behavior.setStartAlphaSwipeDistance(0.1f);
+            behavior.setEndAlphaSwipeDistance(0.7f);
+            behavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_START_TO_END);
+            behavior.setListener(new SwipeDismissBehavior.OnDismissListener() {
+                @Override
+                public void onDismiss(View view) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mMessageView.setElevation(0);
+                    }
+                }
+
+                @Override
+                public void onDragStateChanged(int state) {
+                    switch (state) {
+                        case SwipeDismissBehavior.STATE_DRAGGING:
+                        case SwipeDismissBehavior.STATE_SETTLING:
+                            // If the view is being dragged or settling, cancel the timeout
+                            cancelAllSchedule();
+                            break;
+                        case SwipeDismissBehavior.STATE_IDLE:
+                            // If the view has been released and is idle, restore the timeout
+                            restoreSchedule(1000);
+                            break;
+                    }
+                }
+            });
+            ((CoordinatorLayout.LayoutParams) lp).setBehavior(behavior);
+        }
+
+        // for common button
         if (null != commonCallback) {
             commonTV.setVisibility(View.VISIBLE);
             commonTV.setOnClickListener(new View.OnClickListener() {
@@ -210,10 +184,13 @@ public class TopMessage {
                     commonCallback.commonClick(v);
                 }
             });
+            commonTV.setText(commonButtonText);
         } else {
             commonTV.setVisibility(View.GONE);
         }
-        if (null != confirmCallback && null != cancelCallback) {
+
+        // for confirm and cancel button
+        if (null != confirmOrCancelCallback) {
             confirmTV.setVisibility(View.VISIBLE);
             cancelTV.setVisibility(View.VISIBLE);
             confirmTV.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +198,7 @@ public class TopMessage {
                 public void onClick(View v) {
                     mHandler.removeCallbacksAndMessages(null);
                     mHandler.sendMessage(mHandler.obtainMessage(MSG_DISMISS, TopMessage.this));
-                    confirmCallback.confirmClick(v);
+                    confirmOrCancelCallback.confirmClick(v);
                 }
             });
             cancelTV.setOnClickListener(new View.OnClickListener() {
@@ -229,12 +206,51 @@ public class TopMessage {
                 public void onClick(View v) {
                     mHandler.removeCallbacksAndMessages(null);
                     mHandler.sendMessage(mHandler.obtainMessage(MSG_DISMISS, TopMessage.this));
-                    cancelCallback.cancelClick(v);
+                    confirmOrCancelCallback.cancelClick(v);
                 }
             });
+            confirmTV.setText(confirmButtonText);
+            cancelTV.setText(cancelButtonText);
         } else {
             confirmTV.setVisibility(View.GONE);
             cancelTV.setVisibility(View.GONE);
+        }
+
+        // for send button and input area
+        if (null != sendCallback) {
+            inputAreaRL.setVisibility(View.VISIBLE);
+            final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputHint.length > 0) {
+                inputET.setHint(inputHint[0]);
+            }
+            sendTV.setText(sendButtonText);
+            sendTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String content = inputET.getText().toString().trim();
+                    if ("".equals(content)) {
+                        if (inputHint.length > 1) {
+                            inputET.setHint(inputHint[1]);
+                        } else {
+                            inputET.setHint("You must input something!");
+                        }
+                        inputET.setHintTextColor(v.getResources().getColor(R.color.hint_warning));
+                        return;
+                    }
+                    mHandler.removeCallbacksAndMessages(null);
+                    mHandler.sendMessage(mHandler.obtainMessage(MSG_DISMISS, TopMessage.this));
+                    // hide the soft keyboard
+                    imm.hideSoftInputFromWindow(inputET.getWindowToken(), 0);
+                    sendCallback.send(content);
+                }
+            });
+            // show the soft keyboard automatically; request the focus on the edittext so user can
+            // input directly
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            inputET.requestFocus();
+            mHandler.removeCallbacksAndMessages(null);
+        } else {
+            inputAreaRL.setVisibility(View.GONE);
         }
     }
 
@@ -302,8 +318,8 @@ public class TopMessage {
      * call to show the message view
      */
     private void showView() {
-        if (!isShow) {
-            isShow = true;
+        if (!mIsShow) {
+            mIsShow = true;
             animateIn();
         }
     }
@@ -312,8 +328,8 @@ public class TopMessage {
      * call to dismiss the message view
      */
     private void hideView() {
-        if (isShow) {
-            isShow = false;
+        if (mIsShow) {
+            mIsShow = false;
             animateOut();
         }
     }
@@ -321,32 +337,38 @@ public class TopMessage {
     /**
      * schedule time to dismiss message view after show it
      *
-     * @param duration
+     * @param duration the duration
      */
-    private void scheduleTime(DURATION duration) {
-        int timeOut = 1000;
-        switch (duration) {
-            case LONG:
-                timeOut = 2000;
-                break;
-            case MEDIUM:
-                timeOut = 1500;
-                break;
-            case SHORT:
-            default:
-                timeOut = 1000;
-                break;
+    protected void scheduleTime(DURATION duration) {
+        int timeOut;
+        if (null != duration) {
+            switch (duration) {
+                case LONG:
+                    timeOut = 2000;
+                    break;
+                case MEDIUM:
+                    timeOut = 1500;
+                    break;
+                case SHORT:
+                    timeOut = 1000;
+                    break;
+                default:
+                    timeOut = 0;
+                    break;
+            }
+        } else {
+            timeOut = 0;
         }
-        mHandler.removeCallbacksAndMessages(null);
+        cancelAllSchedule();
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SHOW, TopMessage.this));
-        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_DISMISS, TopMessage.this), timeOut);
+        restoreSchedule(timeOut);
     }
 
     /**
      * get message view from decor view
      *
-     * @param decorView
-     * @param messageViewTag
+     * @param decorView      the activity decor view
+     * @param messageViewTag the tag of the message view
      * @return
      */
     private int getMessageViewIndex(ViewGroup decorView, String messageViewTag) {
@@ -358,15 +380,70 @@ public class TopMessage {
         return -2;
     }
 
+    /**
+     * the behavior when user just swipe the message
+     */
+    private final class Behavior extends SwipeDismissBehavior<View> {
+        @Override
+        public boolean canSwipeDismissView(@NonNull View view) {
+            return view instanceof LinearLayout;
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(CoordinatorLayout parent, View child, MotionEvent event) {
+            // to make sure if user want to make some interaction with the message,
+            // then we cancel all messages in the handler
+            if (parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY())) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        cancelAllSchedule();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        restoreSchedule(1000);
+                        break;
+
+                }
+            }
+            return super.onInterceptTouchEvent(parent, child, event);
+        }
+    }
+
+    /**
+     * restore the schedule
+     *
+     * @param timeOut the time that the message should dismiss
+     */
+    private void restoreSchedule(int timeOut) {
+        if (null == mCommonCallback && null == mConfirmOrCancelCallback && null == mSendCallback) {
+            mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_DISMISS, TopMessage.this), timeOut);
+        }
+    }
+
+    /**
+     * cancel all the message on the handler
+     */
+    private void cancelAllSchedule() {
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    /* * * * * * * * *
+     * INTERFACES
+     * * * * * * * * *
+     */
+
     public interface CommonCallback {
         void commonClick(View self);
     }
 
-    public interface ConfirmCallback {
+    public interface ConfirmOrCancelCallback {
         void confirmClick(View self);
+
+        void cancelClick(View self);
     }
 
-    public interface CancelCallback {
-        void cancelClick(View self);
+    public interface SendCallback {
+        void send(String content);
     }
 }

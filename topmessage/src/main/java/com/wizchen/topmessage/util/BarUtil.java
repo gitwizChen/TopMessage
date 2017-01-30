@@ -5,18 +5,19 @@ import android.content.Context;
 /**
  * Author: wizChen
  * Date: 2017-01-28 19:14
- * Description:
+ * Description: a util about bar
  */
 
 public class BarUtil {
 
-    private BarUtil() {}
+    private BarUtil() {
+    }
 
     /**
-     * 获取状态栏高度
+     * get the height of the status' bar
      *
-     * @param context context
-     * @return 状态栏高度
+     * @param context the context
+     * @return the height
      */
     public static int getStatusBarHeight(Context context) {
         int result = -1;
