@@ -1,6 +1,6 @@
 A beautiful way of message prompting instead of Toast😈😈😍!
 
-![sample](sample.gif)
+![sample](screenshots/sample.gif)
 
 # Principle
 Just set a view to the current activity decor view. May be the effect is different before Android N!
