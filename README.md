@@ -5,6 +5,29 @@ A beautiful way of message prompting instead of Toast😈😈😍!
 # Principle
 Just set a view to the current activity decor view. May be the effect is different before Android N!
 
+# Install
+```
+// Gradle
+compile 'com.wizchen.topmessage:topmessage:1.0.1'
+```
+
+```
+// Maven
+<dependency>
+  <groupId>com.wizchen.topmessage</groupId>
+  <artifactId>topmessage</artifactId>
+  <version>1.0.1</version>
+  <type>pom</type>
+</dependency>
+```
+
+```
+// Ivy
+<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.1'>
+  <artifact name='topmessage' ext='pom' />
+</dependency>
+```
+
 # Usage
 
 ```

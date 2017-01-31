@@ -24,6 +24,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -97,6 +100,7 @@ bintray {
         repo = "maven" // 发布到Maven库
         name = "TopMessage" // 发布到JCenter上的项目名字
         websiteUrl = siteUrl
+        userOrg = properties.getProperty("bintray.userOrg")
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         publish = true
