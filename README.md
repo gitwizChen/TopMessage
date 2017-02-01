@@ -6,12 +6,12 @@ A beautiful way of message prompting instead of Toast😈😈😍!
 Just set a view to the current activity decor view. May be the effect is different before Android L!
 
 From version 1.0.3, you don't have to set the current activity to manager but the **TopActivityManager** will do this, that's why first step of Usage is so important.
-More information please read [this](http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android/29786451#29786451)
+More information please read [this](http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android/29786451#29786451).
 
 # Install
 ```
 // Gradle
-compile 'com.wizchen.topmessage:topmessage:1.0.3'
+compile 'com.wizchen.topmessage:topmessage:1.0.4'
 ```
 
 ```
@@ -19,14 +19,14 @@ compile 'com.wizchen.topmessage:topmessage:1.0.3'
 <dependency>
   <groupId>com.wizchen.topmessage</groupId>
   <artifactId>topmessage</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <type>pom</type>
 </dependency>
 ```
 
 ```
 // Ivy
-<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.3'>
+<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.4'>
   <artifact name='topmessage' ext='pom' />
 </dependency>
 ```

@@ -14,7 +14,7 @@ import com.wizchen.topmessage.util.TopActivityManager;
 
 public class TopApplication extends Application {
 
-    private static TopApplication mAppContext;
+    protected static TopApplication mAppContext;
 
     @Override
     public void onCreate() {
@@ -58,7 +58,7 @@ public class TopApplication extends Application {
         });
     }
 
-    public static Application getInstance() {
+    public static TopApplication getInstance() {
         return mAppContext;
     }
 }
