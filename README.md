@@ -4,6 +4,7 @@ A beautiful way of message prompting instead of Toast😈😈😍!
 
 # Principle
 Just set a view to the current activity decor view. May be the effect is different before Android L!
+
 From version 1.0.3, you don't have to set the current activity to manager but the **TopActivityManager** will do this, that's why first step of Usage is so important.
 More information please read [this](http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android/29786451#29786451)
 
