@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wizchen.topmessage.util.BarUtil;
+import com.wizchen.topmessage.util.TopActivityManager;
 
 /**
  * Author: wizChen
@@ -74,7 +75,6 @@ public class TopMessage {
     /**
      * create the message view in current activity
      *
-     * @param activity                the current activity
      * @param message                 the message
      * @param title                   the big title
      * @param backgroundColor         the background of message
@@ -93,8 +93,7 @@ public class TopMessage {
      *                                message and if it has a second element, it will be the hint
      *                                that will be showed when the user clicks submit though he inputs nothing
      */
-    protected void createView(final Activity activity,
-                              String message,
+    protected void createView(String message,
                               String title,
                               @ColorRes int backgroundColor,
                               @DrawableRes int drawableResId,
@@ -104,8 +103,9 @@ public class TopMessage {
         this.mCommonCallback = commonCallback;
         this.mConfirmOrCancelCallback = confirmOrCancelCallback;
         this.mSendCallback = sendCallback;
+        Activity currentActivity = TopActivityManager.getInstance().getCurrentActivity();
         if (null == mDecorView) {
-            mDecorView = (ViewGroup) activity.getWindow().getDecorView();
+            mDecorView = (ViewGroup) currentActivity.getWindow().getDecorView();
         }
         if (null == mMessageView) {
             int messageViewIndex = getMessageViewIndex(mDecorView);
@@ -113,7 +113,7 @@ public class TopMessage {
             if (-2 != messageViewIndex) {
                 mDecorView.removeViewAt(messageViewIndex);
             }
-            mMessageView = (MessageLayout) LayoutInflater.from(activity).inflate(R.layout.message_layout, mDecorView, false);
+            mMessageView = (MessageLayout) LayoutInflater.from(currentActivity).inflate(R.layout.message_layout, mDecorView, false);
             mDecorView.addView(mMessageView, mDecorView.getChildCount());
         }
         mMessageView.setVisibility(View.INVISIBLE);
@@ -130,12 +130,12 @@ public class TopMessage {
         final EditText inputET = (EditText) mMessageView.findViewById(R.id.input);
         final TextView sendTV = (TextView) mMessageView.findViewById(R.id.send);
 
-        rootLL.setPadding(0, BarUtil.getStatusBarHeight(activity), 0, 0);
+        rootLL.setPadding(0, BarUtil.getStatusBarHeight(currentActivity), 0, 0);
         rootLL.setBackgroundResource(backgroundColor);
         inputAreaRL.setBackgroundResource(backgroundColor);
         messageTV.setText(message);
         titleTV.setText(title);
-        iconIV.setImageDrawable(activity.getResources().getDrawable(drawableResId));
+        iconIV.setImageDrawable(currentActivity.getResources().getDrawable(drawableResId));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mMessageView.setElevation(5);
         }
@@ -218,7 +218,7 @@ public class TopMessage {
         // for send button and input area
         if (null != sendCallback) {
             inputAreaRL.setVisibility(View.VISIBLE);
-            final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            final InputMethodManager imm = (InputMethodManager) currentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (inputHint.length > 0) {
                 inputET.setHint(inputHint[0]);
             }

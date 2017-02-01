@@ -12,48 +12,45 @@ import com.wizchen.topmessage.TopMessageManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Activity mActivity;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mActivity = this;
 
         final TextView helloTV = (TextView) findViewById(R.id.hello);
 
         findViewById(R.id.success).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showSuccess(mActivity, "This is a sample of success top message.", null, TopMessage.DURATION.SHORT);
+                TopMessageManager.showSuccess("This is a sample of success top message.", null, TopMessage.DURATION.SHORT);
             }
         });
 
         findViewById(R.id.error).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showError(mActivity, "This is a sample of error top message.", null, TopMessage.DURATION.MEDIUM);
+                TopMessageManager.showError("This is a sample of error top message.", null, TopMessage.DURATION.MEDIUM);
             }
         });
 
         findViewById(R.id.warning).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showWarning(mActivity, "This is a sample of warning top message.", null, TopMessage.DURATION.LONG);
+                TopMessageManager.showWarning("This is a sample of warning top message.", null, TopMessage.DURATION.LONG);
             }
         });
 
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showInfo(mActivity, "This is a sample of info top message.");
+                TopMessageManager.showInfo("This is a sample of info top message.");
             }
         });
 
         findViewById(R.id.confirm_and_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showWarning(mActivity, "This is a sample of confirm and cancel button top message.", null, new TopMessage.ConfirmOrCancelCallback() {
+                TopMessageManager.showWarning("This is a sample of confirm and cancel button top message.", null, new TopMessage.ConfirmOrCancelCallback() {
                     @Override
                     public void confirmClick(View self) {
                         helloTV.setText("confirm button clicked");
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.common).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showSuccess(mActivity, "This is a sample of common button top message.", null, new TopMessage.CommonCallback() {
+                TopMessageManager.showSuccess("This is a sample of common button top message.", null, new TopMessage.CommonCallback() {
                     @Override
                     public void commonClick(View self) {
                         helloTV.setText("common button click");
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.input).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TopMessageManager.showInfo(mActivity, "请告诉我WI-FI密码多少?", "提示", new TopMessage.SendCallback() {
+                TopMessageManager.showInfo("请告诉我WI-FI密码多少?", "提示", new TopMessage.SendCallback() {
                     @Override
                     public void send(String content) {
                         helloTV.setText("Input content:" + content);
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.toast).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mActivity, "This is a toast sample.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "This is a toast sample.", Toast.LENGTH_SHORT).show();
             }
         });
     }
