@@ -48,7 +48,7 @@ public class TopMessage {
     private static final Handler mHandler;
 
     private ViewGroup mDecorView;
-    private CoordinatorLayout mMessageView;
+    private MessageLayout mMessageView;
     private boolean mIsShow = false;
     private CommonCallback mCommonCallback;
     private ConfirmOrCancelCallback mConfirmOrCancelCallback;
@@ -108,13 +108,12 @@ public class TopMessage {
             mDecorView = (ViewGroup) activity.getWindow().getDecorView();
         }
         if (null == mMessageView) {
-            int messageViewIndex = getMessageViewIndex(mDecorView, "top-message");
+            int messageViewIndex = getMessageViewIndex(mDecorView);
             // if activity already has a message view, retrieving it from decorview
             if (-2 != messageViewIndex) {
                 mDecorView.removeViewAt(messageViewIndex);
             }
-            mMessageView = (CoordinatorLayout) LayoutInflater.from(activity).inflate(R.layout.message_layout, mDecorView, false);
-            mMessageView.setTag("top-message");
+            mMessageView = (MessageLayout) LayoutInflater.from(activity).inflate(R.layout.message_layout, mDecorView, false);
             mDecorView.addView(mMessageView, mDecorView.getChildCount());
         }
         mMessageView.setVisibility(View.INVISIBLE);
@@ -367,13 +366,12 @@ public class TopMessage {
     /**
      * get message view from decor view
      *
-     * @param decorView      the activity decor view
-     * @param messageViewTag the tag of the message view
+     * @param decorView the activity decor view
      * @return
      */
-    private int getMessageViewIndex(ViewGroup decorView, String messageViewTag) {
+    private int getMessageViewIndex(ViewGroup decorView) {
         for (int i = 0; i < decorView.getChildCount(); i++) {
-            if (messageViewTag.equals(decorView.getChildAt(i).getTag())) {
+            if (decorView.getChildAt(i) instanceof MessageLayout) {
                 return i;
             }
         }

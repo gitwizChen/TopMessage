@@ -8,7 +8,7 @@ Just set a view to the current activity decor view. May be the effect is differe
 # Install
 ```
 // Gradle
-compile 'com.wizchen.topmessage:topmessage:1.0.1'
+compile 'com.wizchen.topmessage:topmessage:1.0.2'
 ```
 
 ```
@@ -16,14 +16,14 @@ compile 'com.wizchen.topmessage:topmessage:1.0.1'
 <dependency>
   <groupId>com.wizchen.topmessage</groupId>
   <artifactId>topmessage</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <type>pom</type>
 </dependency>
 ```
 
 ```
 // Ivy
-<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.1'>
+<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.2'>
   <artifact name='topmessage' ext='pom' />
 </dependency>
 ```
