@@ -9,9 +9,10 @@ From version 1.0.3, you don't have to set the current activity to manager but th
 More information please read [this](http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android/29786451#29786451).
 
 # Install
+
 ```
 // Gradle
-compile 'com.wizchen.topmessage:topmessage:1.0.4'
+compile 'com.wizchen.topmessage:topmessage:1.0.5'
 ```
 
 ```
@@ -19,37 +20,31 @@ compile 'com.wizchen.topmessage:topmessage:1.0.4'
 <dependency>
   <groupId>com.wizchen.topmessage</groupId>
   <artifactId>topmessage</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <type>pom</type>
 </dependency>
 ```
 
 ```
 // Ivy
-<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.4'>
+<dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.5'>
   <artifact name='topmessage' ext='pom' />
 </dependency>
 ```
 
 # Usage
 
-1. Edit your AndroidManifest.xml like below or extend your CustomApplication from TopApplication.
-```
-    <application
-        android:name="com.wizchen.topmessage.TopApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+1. Add the code below in your custom application
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+```
+public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        registerActivityLifecycleCallbacks(TopActivityManager.getInstance());
+    }
+}
 ```
 
 2. Just enjoy yourself!
@@ -93,6 +88,7 @@ Happy to hear any good suggestions! Just stars!
 - Block current thread so that user can go on after the message view is dismissed?
 
 # License
+
 Copyright 2016 wizChen
 
 Licensed under the Apache License, Version 2.0 (the "License");

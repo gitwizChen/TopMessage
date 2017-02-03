@@ -2,6 +2,8 @@ package com.wizchen.topmessage;
 
 import android.app.Activity;
 
+import com.wizchen.topmessage.util.TopActivityManager;
+
 /**
  * Author: wizChen
  * Date: 2017-01-30 19:34
@@ -118,7 +120,7 @@ public class TopMessageManager {
                                     TopMessage.ConfirmOrCancelCallback confirmOrCancelCallback, String confirmButtonText, String cancelButtonText,
                                     TopMessage.SendCallback sendCallback, String sendButtonText, String... inputHint) {
         if (null == title || "".equals(title)) {
-            title = TopApplication.getInstance().getResources().getString(R.string.success);
+            title = TopActivityManager.getInstance().getCurrentActivity().getResources().getString(R.string.success);
         }
         TopMessage topMessage = new TopMessage();
         topMessage.createView(message, title,
@@ -236,7 +238,7 @@ public class TopMessageManager {
                                   TopMessage.ConfirmOrCancelCallback confirmOrCancelCallback, String confirmButtonText, String cancelButtonText,
                                   TopMessage.SendCallback sendCallback, String sendButtonText, String... inputHint) {
         if (null == title || "".equals(title)) {
-            title = TopApplication.getInstance().getResources().getString(R.string.error);
+            title = TopActivityManager.getInstance().getCurrentActivity().getResources().getString(R.string.error);
         }
         TopMessage topMessage = new TopMessage();
         topMessage.createView(message, title,
@@ -354,7 +356,7 @@ public class TopMessageManager {
                                     TopMessage.ConfirmOrCancelCallback confirmOrCancelCallback, String confirmButtonText, String cancelButtonText,
                                     TopMessage.SendCallback sendCallback, String sendButtonText, String... inputHint) {
         if (null == title || "".equals(title)) {
-            title = TopApplication.getInstance().getResources().getString(R.string.warning);
+            title = TopActivityManager.getInstance().getCurrentActivity().getResources().getString(R.string.warning);
         }
         TopMessage topMessage = new TopMessage();
         topMessage.createView(message, title,
@@ -472,7 +474,7 @@ public class TopMessageManager {
                                  TopMessage.ConfirmOrCancelCallback confirmOrCancelCallback, String confirmButtonText, String cancelButtonText,
                                  TopMessage.SendCallback sendCallback, String sendButtonText, String... inputHint) {
         if (null == title || "".equals(title)) {
-            title = TopApplication.getInstance().getResources().getString(R.string.info);
+            title = TopActivityManager.getInstance().getCurrentActivity().getResources().getString(R.string.info);
         }
         TopMessage topMessage = new TopMessage();
         topMessage.createView(message, title,
