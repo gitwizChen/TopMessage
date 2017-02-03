@@ -34,7 +34,7 @@ compile 'com.wizchen.topmessage:topmessage:1.0.5'
 
 # Usage
 
-1. Add the code below in your custom application
+1.Add the code below in your custom application
 
 ```
 public class App extends Application {
@@ -47,7 +47,7 @@ public class App extends Application {
 }
 ```
 
-2. Just enjoy yourself!
+2.Just enjoy yourself!
 
 ```
 // the simplest and the default effect
@@ -89,6 +89,7 @@ Happy to hear any good suggestions! Just stars!
 
 # License
 
+```
 Copyright 2016 wizChen
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,3 +103,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
