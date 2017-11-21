@@ -10,12 +10,12 @@ More information please read [this](http://stackoverflow.com/questions/11411395/
 
 # Install
 
-```
+```groovy
 // Gradle
 compile 'com.wizchen.topmessage:topmessage:1.0.5'
 ```
 
-```
+```xml
 // Maven
 <dependency>
   <groupId>com.wizchen.topmessage</groupId>
@@ -25,7 +25,7 @@ compile 'com.wizchen.topmessage:topmessage:1.0.5'
 </dependency>
 ```
 
-```
+```xml
 // Ivy
 <dependency org='com.wizchen.topmessage' name='topmessage' rev='1.0.5'>
   <artifact name='topmessage' ext='pom' />
@@ -36,7 +36,7 @@ compile 'com.wizchen.topmessage:topmessage:1.0.5'
 
 1.Add the code below in your custom application
 
-```
+```Java
 public class App extends Application {
 
     @Override
@@ -49,32 +49,32 @@ public class App extends Application {
 
 2.Just enjoy yourself!
 
-```
+```Java
 // the simplest and the default effect
 TopMessageManager.showSuccess(msg);
 ```
 
-```
+```Java
 // use custom duration
 TopMessageManager.showSuccess(msg, duration);
 ```
 
-```
+```Java
 // use custom duration and title
 TopMessageManager.showSuccess(msg, duration, title);
 ```
 
-```
+```Java
 // with a common button
 TopMessageManager.showSuccess(msg, title, commonCallback, commonButtonText);
 ```
 
-```
+```Java
 // with a confitm button and a cancel button
 TopMessageManager.showSuccess(msg, title, confirmOrCancelCallback, confirmButtonText, cancelButtonText);
 ```
 
-```
+```Java
 // with a input area
 TopMessageManager.showSuccess(msg, title, sendCallback, sendButtonText, inputHint);
 ```
